@@ -22,16 +22,16 @@ func main() {
 	addPrivateRoutes(private)
 
 	if os.Getenv("USE_HTTPS") == "true" {
-		log.Fatalln(router.RunTLS(":8080", "/opt/skinnywsso/tls/cert.pem", "/opt/skinnywsso/tls/key.pem"))
+		log.Fatalln(router.RunTLS(":443", os.Getenv("CERT_PATH"), os.Getenv("KEY_PATH")))
 	} else {
-		log.Fatalln(router.Run(":8080"))
+		log.Fatalln(router.Run(":80"))
 	}
 }
 
 func CORSMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Writer.Header().Set("Content-Type", "text/html")
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "https://sample.gfed.dev")
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 		c.Writer.Header().Set("Access-Control-Max-Age", "86400")
 		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")

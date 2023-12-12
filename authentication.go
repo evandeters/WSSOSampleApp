@@ -19,7 +19,7 @@ func validateAgainstSSO(c *gin.Context) {
 
 	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 
-	resp, err := http.Get("https://localhost/api/users/auth/" + token.Value)
+	resp, err := http.Get("https://wsso.dev.gfed/api/users/auth/" + token.Value)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
 		return
@@ -41,7 +41,7 @@ func tokenAuth(c *gin.Context) {
 
 	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 
-	resp, err := http.Get("https://localhost/api/users/auth/" + token)
+	resp, err := http.Get("https://wsso.dev.gfed/api/users/auth/" + token)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
 		return
@@ -55,7 +55,7 @@ func tokenAuth(c *gin.Context) {
 
 	c.SetCookie("auth_token", token, 86400, "/", "dev.gfed", false, false)
 
-	c.Redirect(http.StatusFound, "https://sample.dev.gfed:8080/home")
+	c.Redirect(http.StatusFound, "https://sample.dev.gfed/home")
 }
 
 func logout(c *gin.Context) {
